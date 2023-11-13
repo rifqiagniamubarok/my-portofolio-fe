@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { AiFillSnippets } from 'react-icons/ai';
+import { AiFillSmile, AiFillSnippets } from 'react-icons/ai';
 import { RiArticleLine, RiDashboard2Line, RiFolderImageLine } from 'react-icons/ri';
 
 const Sidebar = ({ path }) => {
@@ -55,7 +55,7 @@ const Sidebar = ({ path }) => {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/post" className={classNames(path === '/admin/post' ? active : notActive)}>
+                <Link href="/admin/post" className={classNames(path.includes('/admin/post') ? active : notActive)}>
                   <RiArticleLine />
 
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
@@ -69,6 +69,14 @@ const Sidebar = ({ path }) => {
 
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Photos
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/icons" className={classNames(path === '/admin/icons' ? active : notActive)}>
+                  <AiFillSmile />
+                  <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
+                    Icons
                   </span>
                 </Link>
               </li>

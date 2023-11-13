@@ -58,12 +58,20 @@ const AdminLayout = ({ children }) => {
       path: '/admin/post',
     },
     {
+      name: 'Create Post',
+      path: '/admin/post/create',
+    },
+    {
       name: 'Tag',
       path: '/admin/post/tag',
     },
     {
       name: 'Photos',
       path: '/admin/photos',
+    },
+    {
+      name: 'Icons',
+      path: '/admin/icons',
     },
     {
       name: 'Experiences',

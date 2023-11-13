@@ -1,19 +1,20 @@
+import IconUpload from '@/components/Organisms/IconUpload';
 import AdminLayout from '@/components/Templates/AdminLayout';
-import { Button, Card, Input, Modal, ModalBody, ModalContent, Image as NuiImage, Skeleton, useDisclosure } from '@nextui-org/react';
-import { AiFillClockCircle, AiFillCloseCircle, AiFillDelete, AiFillEdit, AiOutlineFileImage } from 'react-icons/ai';
-import React, { Suspense, useState } from 'react';
-import Image from 'next/image';
-import { parse } from 'cookie';
-import axios from 'axios';
-import ImageUpload from '@/components/Organisms/ImageUpload';
-import classNames from 'classnames';
 import axiosInstance from '@/utils/axiosInstance';
+import { Button, Card, Input, Modal, ModalContent, useDisclosure } from '@nextui-org/react';
+import axios from 'axios';
+import classNames from 'classnames';
+import { parse } from 'cookie';
+import Image from 'next/image';
 
-const Photos = ({ photos: data }) => {
-  const [photos, setPhotos] = useState(data);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [hoverImage, setHoverImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+import React, { useState } from 'react';
+import { AiFillCloseCircle, AiFillDelete, AiFillEdit } from 'react-icons/ai';
+
+const Icons = ({ icons: data }) => {
+  const [icons, setIcons] = useState(data);
+  const [uploadedIcon, setUploadedIcon] = useState(null);
+  const [hoverIcon, setHoverIcon] = useState(null);
+  const [previewIcon, setPreviewIcon] = useState(null);
   const defaultForm = {
     name: '',
     about: '',
@@ -27,14 +28,14 @@ const Photos = ({ photos: data }) => {
         data: {
           data: { data },
         },
-      } = await axiosInstance.get('/image', {
+      } = await axiosInstance.get('/icon', {
         params: {
           page: 1,
           page_size: 18,
         },
       });
 
-      setPhotos(data);
+      setIcons(data);
     } catch (error) {
       console.error({ error });
     }
@@ -42,7 +43,7 @@ const Photos = ({ photos: data }) => {
 
   const addData = async (form) => {
     try {
-      await axiosInstance.post('/image', form);
+      await axiosInstance.post('/icon', form);
       await fetchData();
     } catch (error) {
       console.error(error);
@@ -51,20 +52,20 @@ const Photos = ({ photos: data }) => {
 
   const { isOpen: isOpenPreview, onOpen: onOpenPreview, onClose: onClosePreview } = useDisclosure();
 
-  const handleImageUpload = (file) => {
-    setUploadedImage(URL.createObjectURL(file));
+  const handleIconUpload = (file) => {
+    setUploadedIcon(URL.createObjectURL(file));
     setForm({ ...form, file: file });
   };
 
   const handleAdd = async () => {
     const formData = new FormData();
-    formData.append('image', form.file);
+    formData.append('icon', form.file);
     formData.append('name', form.name);
     formData.append('about', form.about);
 
     await addData(formData);
     setForm(defaultForm);
-    setUploadedImage(null);
+    setUploadedIcon(null);
   };
 
   return (
@@ -74,7 +75,7 @@ const Photos = ({ photos: data }) => {
           {(onClose) => (
             <div>
               <div className="w-full aspect-video bg-black relative">
-                <Image src={previewImage} alt="image-preview" fill className="object-contain" loading="lazy" />
+                <Image src={previewIcon} alt="image-preview" fill className="object-contain" loading="lazy" />
               </div>
             </div>
           )}
@@ -84,21 +85,21 @@ const Photos = ({ photos: data }) => {
         <Card className="p-4">
           <div className="flex gap-2">
             <div>
-              {uploadedImage ? (
+              {uploadedIcon ? (
                 <div
                   className="relative h-52 aspect-video rounded-md overflow-hidden cursor-pointer bg-slate-300"
                   onClick={() => {
-                    setPreviewImage(uploadedImage);
+                    setPreviewIcon(uploadedIcon);
                     onOpenPreview();
                   }}
                 >
-                  <Button isIconOnly radius="sm" size="sm" variant="flat" color="danger" onClick={() => setUploadedImage(null)} className="absolute z-20 top-1 right-1">
+                  <Button isIconOnly radius="sm" size="sm" variant="flat" color="danger" onClick={() => setUploadedIcon(null)} className="absolute z-20 top-1 right-1">
                     <AiFillCloseCircle />
                   </Button>
-                  <Image src={uploadedImage} fill alt="new-image" className="object-contain" />
+                  <Image src={uploadedIcon} fill alt="new-icon" className="object-contain" />
                 </div>
               ) : (
-                <ImageUpload onImageUpload={handleImageUpload} />
+                <IconUpload onIconUpload={handleIconUpload} />
               )}
             </div>
 
@@ -113,18 +114,18 @@ const Photos = ({ photos: data }) => {
         </Card>
         <Card className="p-4">
           <div className="grid grid-cols-6 gap-4">
-            {photos.map(({ id, path }, index) => (
+            {icons.map(({ id, path }, index) => (
               <div
-                className="w-full aspect-video rounded-md relative overflow-hidden cursor-pointer bg-black"
                 key={index}
-                onMouseOver={() => setHoverImage(id)}
-                onMouseOut={() => setHoverImage(null)}
+                className="w-full aspect-video rounded-md relative overflow-hidden cursor-pointer bg-black"
+                onMouseOver={() => setHoverIcon(id)}
+                onMouseOut={() => setHoverIcon(null)}
                 onClick={() => {
-                  setPreviewImage(path);
+                  setPreviewIcon(path);
                   onOpenPreview();
                 }}
               >
-                <div className={classNames(id == hoverImage ? 'absolute z-20 top-1 right-1 flex gap-1' : 'hidden')}>
+                <div className={classNames(id == hoverIcon ? 'absolute z-20 top-1 right-1 flex gap-1' : 'hidden')}>
                   <Button isIconOnly radius="sm" size="sm" variant="faded" color="warning" className="">
                     <AiFillEdit />
                   </Button>
@@ -159,16 +160,16 @@ export async function getServerSideProps(context) {
       data: {
         data: { data },
       },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/image`, {
+    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/icon`, {
       params: { page: 1, page_size: 18 },
       headers: {
         Authorization: `Bearer ${cookie.token}`,
       },
     });
 
-    const photos = data;
+    const icons = data;
     return {
-      props: { photos },
+      props: { icons },
     };
   } catch (error) {
     return {
@@ -177,4 +178,4 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default Photos;
+export default Icons;
