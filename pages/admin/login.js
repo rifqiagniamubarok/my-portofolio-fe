@@ -37,7 +37,7 @@ const Login = () => {
     } catch (error) {
       console.error({ error });
       setIsInvalid(true);
-      setInvalidMsg(error.response.data.msg || 'Username or password wrong');
+      setInvalidMsg(error?.response?.data?.msg || 'Username or password wrong');
     } finally {
       setIsLoading(false);
     }
