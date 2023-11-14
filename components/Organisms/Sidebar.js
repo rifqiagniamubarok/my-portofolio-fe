@@ -55,7 +55,7 @@ const Sidebar = ({ path }) => {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/post" className={classNames(path.includes('/admin/post') ? active : notActive)}>
+                <Link href="/admin/post" className={classNames(path && path?.includes('/admin/post') ? active : notActive)}>
                   <RiArticleLine />
 
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
@@ -81,7 +81,7 @@ const Sidebar = ({ path }) => {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/experiences" className={classNames(path.includes('/admin/experiences') ? active : notActive)}>
+                <Link href="/admin/experiences" className={classNames(path && path?.includes('/admin/experiences') ? active : notActive)}>
                   <AiFillSnippets />
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Experiences
