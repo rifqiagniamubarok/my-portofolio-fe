@@ -1,18 +1,24 @@
 import BasicLayout from '@/components/Templates/BasicLayout';
 import WorkItem from '@/components/atoms/WorkItem';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const About = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <BasicLayout>
-      <div className="space-y-8">
+      <section className="space-y-8 pt-20">
         <div className="">
-          <div className="">
+          <div data-aos="fade-up" className="">
             <p className="text-white text-sm md:text-lg">About </p>
             <p className="text-2xl md:text-4xl font-semibold bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text">Rifqi Agnia Mubarok</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-6 md:gap-x-8 mt-5 ">
+          <div className="grid grid-cols-1 md:grid-cols-6 md:gap-x-8 mt-5 " data-aos="fade-up" data-aos-duration="2000">
             <div className="md:col-span-4 text-white text-base md:text-lg space-y-4 text-justify ">
               <p>
                 {`Hi!, I'm Rifqi. The beginning of my journey as a web developer started in April 2020, which was at the start of the pandemic. At that time I was studying electrical
@@ -51,7 +57,7 @@ const About = () => {
                       }
                       fill
                       alt="me"
-                      className="object-cover"
+                      className=" object-cover "
                     />
                   </div>
                 </div>
@@ -95,7 +101,7 @@ const About = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </BasicLayout>
   );
 };
