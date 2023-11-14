@@ -11,6 +11,7 @@ const Gallery = ({ isOpen: isOpenRequire, onClose: onCloseRequire, onChange }) =
   const [photos, setPhotos] = useState([]);
   const [photoSelected, setPhotoSelected] = useState(null);
 
+
   const fetchData = async () => {
     try {
       const {
