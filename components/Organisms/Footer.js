@@ -145,60 +145,6 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-
-              <div>
-                <p class="font-medium text-gray-900 dark:text-white">Helpful Links</p>
-
-                <ul class="mt-6 space-y-4 text-sm">
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      Contact
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      FAQs
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      Live Chat
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <p class="font-medium text-gray-900 dark:text-white">Legal</p>
-
-                <ul class="mt-6 space-y-4 text-sm">
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      Accessibility
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      Returns Policy
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      Refund Policy
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="#" class="text-gray-700 transition hover:opacity-75 dark:text-gray-200">
-                      Hiring Statistics
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
 
