@@ -1,7 +1,7 @@
 import BasicLayout from '@/components/Templates/BasicLayout';
 import WorkItem from '@/components/atoms/WorkItem';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
