@@ -44,8 +44,8 @@ const DetailBlog = ({ post: data }) => {
 
       const currentHeading = headingElements.filter((heading) => scrollPosition >= heading.offsetTop);
 
-      if (currentHeading && activeHeading !== currentHeading[currentHeading.length - 1].id) {
-        setActiveHeading(currentHeading[currentHeading.length - 1].id);
+      if (currentHeading && activeHeading !== currentHeading[currentHeading.length - 1]?.id) {
+        setActiveHeading(currentHeading[currentHeading.length - 1]?.id);
       }
     };
 
@@ -59,9 +59,9 @@ const DetailBlog = ({ post: data }) => {
   }, [activeHeading, headings]);
 
   return (
-    <BasicLayout>
+    <BasicLayout footer>
       <section className="pt-20 space-y-4 dark">
-        <div className="relative w-full h-60 overflow-hidden rounded-md" data-aos="fade-up" data-aos-duration="500">
+        <div className="relative w-full h-32 md:h-60 overflow-hidden rounded-md" data-aos="fade-up" data-aos-duration="500">
           <Image src={post.thumbnail} alt={post.slug + '-image'} fill className="object-cover" />
         </div>
         <div data-aos="fade-up" data-aos-duration="1000">
@@ -72,14 +72,14 @@ const DetailBlog = ({ post: data }) => {
         <div data-aos="fade-up" data-aos-duration="1000">
           <div className="w-full h-0.5 bg-gradient-to-r from-primary to-light-primary"></div>
         </div>
-        <div data-aos="fade-up" data-aos-duration="2000" className="grid grid-cols-4 gap-x-6 relative">
-          <div className="col-span-3">
+        <div data-aos="fade-up" data-aos-duration="2000" className="grid grid-cols-1 md:grid-cols-4 gap-x-6 relative">
+          <div className="md:col-span-3">
             <article
               className="prose dark:prose-invert prose-headings:text-xl prose-headings:pt-1 prose-p:text-base lg:prose-xl prose-code:text-base prose-ol:text-base prose-ul:text-base prose-li:text-base prose-pre:text-base"
               dangerouslySetInnerHTML={{ __html: doc.body.innerHTML }}
             ></article>
           </div>
-          <div className="relative">
+          <div className="hidden md:inline-block md:relative">
             <div className="sticky top-4">
               <p className="text-2xl font-semibold bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text">Table of content</p>
               <div className="space-y-2">

@@ -11,7 +11,7 @@ const About = () => {
   }, []);
 
   return (
-    <BasicLayout>
+    <BasicLayout footer>
       <section className="space-y-8 pt-20">
         <div className="">
           <div data-aos="fade-up" className="">
@@ -66,15 +66,15 @@ const About = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div className="pb-40">
+          {/* <div className="pb-40">
             <p className="text-2xl md:text-4xl font-semibold bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text">Experiences</p>
             <div className="space-y-4 mt-4">
               <WorkItem company={'PT. Raksasa Indonesia'} title={'Front End Developer'} from={'Sep 2023'} experiences={['kfjsdk', 'sdfkdsjf', 'dsfksdjfk']} />
               <WorkItem company={'PT. Raksasa Indonesia'} title={'Front End Developer'} from={'Sep 2023'} experiences={['kfjsdk', 'sdfkdsjf', 'dsfksdjfk']} />
               <WorkItem title={'Full Stack Developer'} from={'Sep 2023'} experiences={['kfjsdk', 'sdfkdsjf', 'dsfksdjfk']} />
             </div>
-          </div>
-          <div className="pb-40">
+          </div> */}
+          {/* <div className="pb-40">
             <p className="text-2xl md:text-4xl font-semibold bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text">Educations</p>
             <div className="space-y-4 mt-4">
               <WorkItem
@@ -99,7 +99,7 @@ const About = () => {
                 experiences={['kfjsdk', 'sdfkdsjf', 'dsfksdjfk']}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </BasicLayout>

@@ -23,7 +23,7 @@ const Post = ({ posts: data, page_info }) => {
         <div className="dark:text-white" data-aos="fade-up" data-aos-duration="1000">
           <Input label="Search" color="primary" variant="bordered" />
         </div>
-        <div className="grid grid-cols-3 gap-4" data-aos="fade-up" data-aos-duration="1500">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up" data-aos-duration="1500">
           {posts.map(({ thumbnail, title, slug, meta_description, tags: unclearTags }, index) => {
             const tags = unclearTags.map(({ name }) => name);
             return <BlogCard key={index} title={title} tags={tags} thumbnail={thumbnail} slug={slug} description={meta_description} />;
