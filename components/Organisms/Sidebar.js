@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { deleteCookie } from 'cookies-next';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AiFillSmile, AiFillSnippets } from 'react-icons/ai';
@@ -8,6 +9,9 @@ const Sidebar = ({ path }) => {
   const active = 'group relative flex justify-center rounded bg-blue-50 dark:bg-slate-500 px-2 py-1.5 text-blue-700 dark:text-white';
   const notActive = 'group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700';
 
+  const handleLogout = () => {
+    deleteCookie('token');
+  };
   return (
     <div className="flex h-screen w-16 flex-col justify-between border-e bg-white dark:bg-darkcard  z-50">
       <div>
@@ -134,8 +138,8 @@ const Sidebar = ({ path }) => {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 dark:border-gray-400 bg-white p-2">
-        <form action="/logout">
-          <button type="submit" className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700">
+        <form>
+          <button onClick={handleLogout} className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
