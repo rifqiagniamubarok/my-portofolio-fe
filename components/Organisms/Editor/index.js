@@ -7,14 +7,29 @@ import Placeholder from '@tiptap/extension-placeholder';
 import Toolbar from './Toolbar';
 import TagInput from '@/components/molecules/TagInput';
 import Gallery from '@/components/Organisms/Gallery';
-import { BreadcrumbItem, Breadcrumbs, Button, Card, Chip, Input, Switch, Textarea } from '@nextui-org/react';
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Button,
+  Card,
+  Chip,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Switch,
+  Textarea,
+  useDisclosure,
+} from '@nextui-org/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { AiFillCloseCircle, AiFillEdit, AiFillFileImage } from 'react-icons/ai';
 import slugify from 'slugify';
 import axiosInstance from '@/utils/axiosInstance';
 
-const Editor = () => {
+const Editor = ({ isEditPost = false, initialValue }) => {
   const router = useRouter();
   const [isOpenGallery, setIsOpenGallery] = useState(false);
   const [title, setTitle] = useState('');
@@ -37,7 +52,7 @@ const Editor = () => {
 
   const handleTitleChange = ({ target: { value } }) => {
     setTitle(value);
-    setSlug(slugify(value));
+    setSlug(slugify(value.toLowerCase()));
   };
 
   const editor = useEditor({
@@ -66,6 +81,17 @@ const Editor = () => {
       setIsLoading(false);
     }
   };
+  const editData = async (payload, id) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axiosInstance.patch(`/post/${id}`, payload);
+      return data;
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSave = async () => {
     const payload = {
@@ -78,15 +104,94 @@ const Editor = () => {
     };
 
     try {
-      const data = await addData(payload);
-      router.push('/admin/post');
+      let newData;
+      if (isEditPost) {
+        const { data: getData } = await editData(payload, initialValue.id);
+        newData = getData;
+      } else {
+        const { data: getData } = await addData(payload);
+        newData = getData;
+      }
+      localStorage.removeItem(!isEditPost ? 'new-post' : `edit-post-${initialValue.id}`);
+      router.push(`/admin/post/${newData.id}`);
     } catch (error) {
       console.error({ error });
     }
   };
 
+  const handleDraft = async () => {
+    const payload = {
+      thumbnail,
+      title,
+      slug,
+      meta_description: metaDescription,
+      body: editor.getHTML(),
+      tags: tags,
+    };
+
+    localStorage.setItem(!isEditPost ? 'new-post' : `edit-post-${initialValue.id}`, JSON.stringify(payload));
+    router.push('/admin/post');
+  };
+
+  const [draftData, setDraftData] = useState(null);
+  useEffect(() => {
+    const draftLocalStorage = localStorage.getItem(!isEditPost ? 'new-post' : `edit-post-${initialValue.id}`);
+    if (draftLocalStorage) {
+      const draftState = JSON.parse(draftLocalStorage);
+      setDraftData(draftState);
+      onOpenModalDraft();
+    }
+  }, []);
+
+  const { isOpen: isOpenModalDraft, onOpen: onOpenModalDraft, onOpenChange: onOpenChangeModalDraft, onClose: onCLoseModalDraft } = useDisclosure();
+
+  const handleUseDraft = () => {
+    console.log(draftData);
+    let { thumbnail, body, title, slug, meta_description, tags } = draftData;
+    editor?.commands.setContent(body);
+    setThumbnail(thumbnail);
+    setTitle(title);
+    setSlug(slug);
+    setMetaDescription(meta_description);
+    setTags(tags);
+    onCLoseModalDraft();
+  };
+
+  useEffect(() => {
+    if (initialValue && isEditPost) {
+      let { id, thumbnail, title, slug, meta_description, body, tags } = initialValue;
+      let newTags = tags?.map(({ id, name, about, createdAt, updatedAt }) => {
+        return { id, name, about, createdAt, updatedAt };
+      });
+      setThumbnail(thumbnail);
+      setTitle(title);
+      setSlug(slug);
+      setMetaDescription(meta_description);
+      setTags(newTags || []);
+      editor?.commands.setContent(body);
+    }
+  }, [editor]);
+
   return (
     <div className="space-y-4">
+      <Modal isOpen={isOpenModalDraft} onOpenChange={onOpenChangeModalDraft}>
+        <ModalContent className="text-black dark:text-white">
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1 ">Draft available</ModalHeader>
+              <ModalBody className="text-center">Want to use draft</ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  No
+                </Button>
+                <Button color="primary" onClick={handleUseDraft}>
+                  Yes
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <Gallery isOpen={isOpenGallery} onClose={() => setIsOpenGallery(!isOpenGallery)} onChange={handleThumbnail} />
       <Card className="p-4 ">
         <div className="flex gap-4">
@@ -138,10 +243,13 @@ const Editor = () => {
               value={metaDescription}
               onChange={(e) => setMetaDescription(e.target.value)}
             />
-            <div className="flex justify-between items-center">
-              <Switch>Publish</Switch>
+            <div className="flex gap-2 items-center">
+              {/* <Switch>Publish</Switch> */}
               <Button color="primary" onClick={handleSave} isLoading={isLoading}>
                 Save
+              </Button>
+              <Button color="primary" variant="bordered" onClick={handleDraft} isLoading={isLoading}>
+                Save as draft
               </Button>
             </div>
           </div>
@@ -149,7 +257,9 @@ const Editor = () => {
       </Card>
       <Card className="p-4">
         <div className="p-3 bg-white transition">
-          <Toolbar editor={editor} />
+          <div className="">
+            <Toolbar editor={editor} />
+          </div>
           <div className="h-[1px] w-full bg-gray-400 my-3"></div>
           <EditorContent editor={editor} className="min-h-[200px]" />
         </div>
