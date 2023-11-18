@@ -24,7 +24,7 @@ const Login = () => {
       setIsLoading(true);
       const {
         data: { data },
-      } = await axios.post(`${process.env.BACKEND_URL}auth/login`, {
+      } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}auth/login`, {
         email,
         password,
       });
