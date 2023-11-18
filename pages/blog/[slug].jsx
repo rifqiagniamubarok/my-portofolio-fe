@@ -1,3 +1,4 @@
+import Article from '@/components/Organisms/Article';
 import BasicLayout from '@/components/Templates/BasicLayout';
 import { Divider } from '@nextui-org/react';
 import axios from 'axios';
@@ -11,51 +12,47 @@ const DetailBlog = ({ post: data }) => {
   const [post, setPost] = useState(data);
   const [activeHeading, setActiveHeading] = useState(null);
 
-  const parse = new DOMParser();
+  // const parse = new DOMParser();
 
-  const doc = parse.parseFromString(post.body, 'text/html');
-  const headings = Array.from(doc.querySelectorAll('h2, h3, h4, h5, h6'));
+  // const doc = parse.parseFromString(post.body, 'text/html');
+  // const headings = Array.from(doc.querySelectorAll('h2, h3, h4, h5, h6'));
 
-  const toc = headings.map((heading, index) => {
-    const headingText = heading.textContent;
-    const headingId = `heading-${index}`;
+  // const toc = headings.map((heading, index) => {
+  //   const headingText = heading.textContent;
+  //   const headingId = `heading-${index}`;
 
-    // Tambahkan anchor link ke heading
-    heading.setAttribute('id', headingId);
+  //   // Tambahkan anchor link ke heading
+  //   heading.setAttribute('id', headingId);
 
-    return {
-      text: headingText,
-      id: headingId,
-    };
-  });
+  //   return {
+  //     text: headingText,
+  //     id: headingId,
+  //   };
+  // });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const headingElements = headings.map((heading) => {
-        const targetElement = document.getElementById(heading.id);
-        const { top } = targetElement.getBoundingClientRect();
-        return {
-          id: heading.id,
-          offsetTop: top,
-        };
-      });
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const headingElements = headings.map((heading) => {
+  //       const targetElement = document.getElementById(heading.id);
+  //       const { top } = targetElement.getBoundingClientRect();
+  //       return {
+  //         id: heading.id,
+  //         offsetTop: top,
+  //       };
+  //     });
 
-      const currentHeading = headingElements.filter((heading) => heading.offsetTop > 0);
+  //     const currentHeading = headingElements.filter((heading) => heading.offsetTop > 0);
 
-      if (currentHeading && activeHeading !== currentHeading[0]?.id) {
-        setActiveHeading(currentHeading[0]?.id);
-      }
-    };
+  //     if (currentHeading && activeHeading !== currentHeading[0]?.id) {
+  //       setActiveHeading(currentHeading[0]?.id);
+  //     }
+  //   };
 
-    // Tambahkan event listener untuk scroll
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Bersihkan event listener saat komponen di-unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [activeHeading, headings]);
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, [activeHeading, headings]);
 
   return (
     <BasicLayout footer>
@@ -73,23 +70,24 @@ const DetailBlog = ({ post: data }) => {
         </div>
         <div data-aos="fade-up" data-aos-duration="2000" className="grid grid-cols-1 md:grid-cols-4 gap-x-6 relative">
           <div className="md:col-span-3">
-            <article
+            {/* <article
               className="prose dark:prose-invert prose-headings:text-xl prose-headings:pt-1 prose-p:text-base lg:prose-xl prose-code:text-base prose-ol:text-base prose-ul:text-base prose-li:text-base prose-pre:text-base"
-              dangerouslySetInnerHTML={{ __html: doc.body.innerHTML }}
-            ></article>
+              dangerouslySetInnerHTML={{ __html: post.body }}
+            ></article> */}
+            <Article body={post.body} />
           </div>
           <div className="hidden md:inline-block md:relative">
             <div className="sticky top-4">
               <p className="text-2xl font-semibold bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text">Table of content</p>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 {toc.map((item) => (
                   <div key={item.id}>
-                    <a href={`#${item.id}`} className={classNames(item.id === activeHeading ? 'text-white' : 'text-gray-400', 'text-base')}>
+                    <Link href={`#${item.id}`} className={classNames(item.id === activeHeading ? 'text-white' : 'text-gray-400', 'text-base')}>
                       {item.text}
-                    </a>
+                    </Link>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

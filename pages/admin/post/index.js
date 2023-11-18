@@ -1,12 +1,14 @@
 import PostLayout from '@/components/Templates/PostLayout';
 import Link from 'next/link';
 import { AiFillDelete, AiFillEdit, AiFillFile, AiFillFileAdd } from 'react-icons/ai';
-import { Button, Card, Input, Pagination, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from '@nextui-org/react';
+import { MdGridView } from 'react-icons/md';
+import { Button, Card, Chip, Input, Pagination, Switch, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from '@nextui-org/react';
 import { parse } from 'cookie';
 import axios from 'axios';
 import { useState } from 'react';
 import axiosInstance from '@/utils/axiosInstance';
 import Image from 'next/image';
+import classNames from 'classnames';
 
 const Post = ({ posts: data, page_info }) => {
   const [posts, setPosts] = useState(data);
@@ -56,7 +58,6 @@ const Post = ({ posts: data, page_info }) => {
               <TableColumn>No</TableColumn>
               <TableColumn>THUMBNAIL</TableColumn>
               <TableColumn>NAME</TableColumn>
-              <TableColumn className="hidden md:flex items-center">ABOUT</TableColumn>
               <TableColumn>STATUS</TableColumn>
               <TableColumn></TableColumn>
             </TableHeader>
@@ -70,12 +71,11 @@ const Post = ({ posts: data, page_info }) => {
                     </div>
                   </TableCell>
                   <TableCell>{title}</TableCell>
-                  <TableCell className="hidden md:inline-block">{meta_description}</TableCell>
-                  <TableCell>{is_publish ? <p>publish</p> : <p>draft</p>}</TableCell>
+                  <TableCell>{is_publish ? <Chip color="primary">Publish</Chip> : <Chip color="default">Draft</Chip>}</TableCell>
                   <TableCell>
                     <Link href={`/admin/post/${id}`}>
-                      <Button isIconOnly variant="faded" color="primary">
-                        <AiFillFile />
+                      <Button variant="faded" color="primary">
+                        <MdGridView /> Detail
                       </Button>
                     </Link>
                   </TableCell>
@@ -83,7 +83,7 @@ const Post = ({ posts: data, page_info }) => {
               ))}
             </TableBody>
           </Table>
-          <div className="flex justify-center mt-4 mb-4">
+          <div className={classNames('flex justify-center mt-4 mb-4', page_info.total_pages <= 1 && 'hidden')}>
             <Pagination total={page_info.total_pages} initialPage={1} page={page} onChange={handlePagination} />
           </div>
         </div>
