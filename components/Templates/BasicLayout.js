@@ -49,7 +49,7 @@ const BasicLayout = ({ footer = false, children }) => {
             <div className="flex justify-between items-center  ">
               <div className="flex gap-4 text-darkcard py-3 ">
                 {pathLIst.map(({ name, path }, index) => (
-                  <div className={classNames(path == getPath ? pathActive : pathNotActive)} key={index}>
+                  <div className={classNames(path !== '/' && getPath.includes(path) ? pathActive : path === '/' && getPath === '/' ? pathActive : pathNotActive)} key={index}>
                     <Link href={path}>
                       <p className="">{name}</p>
                     </Link>
