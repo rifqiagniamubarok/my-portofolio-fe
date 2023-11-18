@@ -34,7 +34,7 @@ const TagInput = ({ variant = 'bordered', onChange }) => {
   return (
     <Autocomplete label="Select Tag" variant={variant} selectedKey={tagSelect} onSelectionChange={handleValueChange}>
       {tags.map((tag) => (
-        <AutocompleteItem key={tag.id} value={tag.id}>
+        <AutocompleteItem key={tag.id} value={tag.id} className="text-black dark:text-white">
           {tag.name}
         </AutocompleteItem>
       ))}
