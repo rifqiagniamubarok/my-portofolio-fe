@@ -1,14 +1,19 @@
+import Article from '@/components/Organisms/Article';
 import AdminLayout from '@/components/Templates/AdminLayout';
 import PostLayout from '@/components/Templates/PostLayout';
 import axiosInstance from '@/utils/axiosInstance';
-import { Button, Card, Divider } from '@nextui-org/react';
+import { Button, Card, Divider, Tooltip } from '@nextui-org/react';
 import axios from 'axios';
 import { parse } from 'cookie';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import React, { useState } from 'react';
+import { AiFillLike, AiOutlineSelect, AiOutlineSend } from 'react-icons/ai';
+import { FaExternalLinkAlt, FaEye } from 'react-icons/fa';
+import { MdPublish, MdUnarchive, MdModeEditOutline } from 'react-icons/md';
 
 const DetailPost = ({ post: data }) => {
   const [post, setPost] = useState(data);
@@ -33,46 +38,66 @@ const DetailPost = ({ post: data }) => {
 
   return (
     <AdminLayout>
-      <div className="grid grid-cols-7 gap-4">
-        <Card className="col-span-5 relative overflow-hidden">
+      <div className=" space-y-4">
+        <Card className="p-4  ">
+          <div className="w-full flex justify-between items-end">
+            <div>
+              <p className="text-base text-slate-400">Slug:</p>
+              <p className="text-lg font-semibold">{post.slug}</p>
+            </div>
+            <div>
+              <Link href={`/blog/${post.slug}`}>
+                <Button className="" isIconOnly color="primary" variant="faded" disabled={!post.is_publish}>
+                  <FaExternalLinkAlt />
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 text-primary font-semibold">
+              <FaEye className="fill-primary" />
+              <p>{post.view}</p>
+            </div>
+            <div className="flex items-center gap-1 text-yellow-500 font-semibold">
+              <AiFillLike className="" />
+              <p>{post.like}</p>
+            </div>
+          </div>
+        </Card>
+        <div className="fixed bottom-4 right-4 z-40">
+          <Card className="p-2 ">
+            <div className="space-x-2">
+              <Tooltip content={post.is_publish ? 'Archive' : 'Publish'} color={!post.is_publish ? 'primary' : 'warning'}>
+                <Button color={!post.is_publish ? 'primary' : 'warning'} variant="faded" isIconOnly onClick={handlePublish}>
+                  {!post.is_publish ? <MdPublish /> : <MdUnarchive />}
+                </Button>
+              </Tooltip>
+              <Tooltip content={'Edit'} color={'primary'}>
+                <Link href={`/admin/post/edit/${post.id}`}>
+                  <Button color={'primary'} variant="faded" isIconOnly onClick={handlePublish}>
+                    <MdModeEditOutline />
+                  </Button>
+                </Link>
+              </Tooltip>
+            </div>
+          </Card>
+        </div>
+        <Card className="relative overflow-hidden">
           <div className="w-full h-52 relative">
             <Image src={post.thumbnail} alt={post.slug + '-thumb'} fill className="object-cover" />
           </div>
           <div className="px-4 py-8">
             <div>
               <p className="text-3xl font-semibold">{post.title}</p>
-              <p className="text-base">{dayjs(post.createdAt).format('DD MMMM YYYY')}</p>
+              <p className="text-base text-primary font-semibold">{dayjs(post.createdAt).format('DD MMMM YYYY')}</p>
+              <p className="text-base">{post.meta_description}</p>
             </div>
             <Divider className="my-4" />
             <div></div>
-            <article
-              className="prose dark:prose-headings:text-white dark:prose-li:text-white dark:prose-ul:text-white dark:text-white lg:prose-xl "
-              dangerouslySetInnerHTML={{ __html: post.body }}
-            ></article>
+
+            <Article body={post.body} />
           </div>
         </Card>
-        <div className="col-span-2">
-          <Card className="p-4 ">
-            <div>
-              <p>Slug :</p>
-              <p>{post.slug}</p>
-              <p>View :</p>
-              <p>{post.view}</p>
-              <p>Like :</p>
-              <p>{post.like}</p>
-              <p>Status:</p>
-              <p>{post.is_publish ? 'publish' : 'draft'}</p>
-              <div className="mt-10 space-y-2">
-                <Button color="primary" variant="solid" className="w-full" onClick={handlePublish}>
-                  {post.is_publish ? 'Publish' : 'unPublish'}
-                </Button>
-                <Button color="danger" className="w-full">
-                  Delete
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </div>
       </div>
     </AdminLayout>
   );
@@ -107,7 +132,7 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     return {
-      props: { post: [] },
+      props: { post: {} },
     };
   }
 }
