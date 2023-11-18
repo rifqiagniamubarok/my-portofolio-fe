@@ -18,7 +18,6 @@ const Sidebar = ({ path }) => {
         <div className="inline-flex h-16 w-16 items-center justify-center">
           <span className="grid h-10 w-10 place-content-center rounded-lg bg-gray-100 dark:bg-slate-500 text-xs text-gray-600 dark:text-white">RM</span>
         </div>
-
         <div className="border-t border-gray-100 dark:border-gray-400">
           <div className="px-2">
             <div className="py-4">
