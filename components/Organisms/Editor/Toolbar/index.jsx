@@ -27,7 +27,7 @@ const Toolbar = ({ editor }) => {
     return 'Paragraph';
   };
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ">
       {/* Paragraph */}
       <DropdownOptions
         options={options}
