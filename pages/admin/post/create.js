@@ -11,37 +11,6 @@ import slugify from 'slugify';
 
 const Create = () => {
   const router = useRouter();
-  const [isOpenGallery, setIsOpenGallery] = useState(false);
-  const [title, setTitle] = useState('');
-  const [thumbnail, setThumbnail] = useState(null);
-  const [slug, setSlug] = useState('');
-  const [tags, setTags] = useState([]);
-  const [metaDescription, setMetaDescription] = useState('');
-
-  const handleThumbnail = (path) => {
-    setThumbnail(path);
-  };
-
-  const handleAddTags = (tag) => {
-    if (!tag) return;
-    const check = tags?.find(({ id }) => id === tag?.id);
-    if (!check) return setTags([...tags, tag]);
-  };
-
-  const handleTitleChange = ({ target: { value } }) => {
-    setTitle(value);
-    setSlug(slugify(value));
-  };
-
-  const handleSave = () => {
-    const payload = {
-      thumbnail,
-      title,
-      slug,
-      meta_description: metaDescription,
-    };
-  };
-
   return (
     <AdminLayout>
       <div className="space-y-4">
