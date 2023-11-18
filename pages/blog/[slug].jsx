@@ -9,14 +9,12 @@ import React, { useEffect, useState } from 'react';
 
 const DetailBlog = ({ post: data }) => {
   const [post, setPost] = useState(data);
-  // Import library untuk parsing HTML (gunakan DOMParser untuk lingkungan browser)
+  const [activeHeading, setActiveHeading] = useState(null);
 
   const parse = new DOMParser();
 
   const doc = parse.parseFromString(post.body, 'text/html');
   const headings = Array.from(doc.querySelectorAll('h2, h3, h4, h5, h6'));
-
-  console.log({ headings });
 
   const toc = headings.map((heading, index) => {
     const headingText = heading.textContent;
@@ -31,25 +29,26 @@ const DetailBlog = ({ post: data }) => {
     };
   });
 
-  const [activeHeading, setActiveHeading] = useState(null);
-
   useEffect(() => {
     const handleScroll = () => {
-      const headingElements = headings.map((heading) => ({
-        id: heading.id,
-        offsetTop: document.getElementById(heading.id).offsetTop,
-      }));
+      const headingElements = headings.map((heading) => {
+        const targetElement = document.getElementById(heading.id);
+        const { top } = targetElement.getBoundingClientRect();
+        return {
+          id: heading.id,
+          offsetTop: top,
+        };
+      });
 
-      const scrollPosition = window.scrollY + 150; // Sesuaikan offset sesuai dengan kebutuhan
+      const currentHeading = headingElements.filter((heading) => heading.offsetTop > 0);
 
-      const currentHeading = headingElements.filter((heading) => scrollPosition >= heading.offsetTop);
-
-      if (currentHeading && activeHeading !== currentHeading[currentHeading.length - 1]?.id) {
-        setActiveHeading(currentHeading[currentHeading.length - 1]?.id);
+      if (currentHeading && activeHeading !== currentHeading[0]?.id) {
+        setActiveHeading(currentHeading[0]?.id);
       }
     };
 
     // Tambahkan event listener untuk scroll
+
     window.addEventListener('scroll', handleScroll);
 
     // Bersihkan event listener saat komponen di-unmount
@@ -85,11 +84,7 @@ const DetailBlog = ({ post: data }) => {
               <div className="space-y-2">
                 {toc.map((item) => (
                   <div key={item.id}>
-                    <a
-                      href={`#${item.id}`}
-                      onClick={() => setActiveHeading(item.id)}
-                      className={classNames(item.id === activeHeading ? 'text-white' : 'text-gray-400', 'text-base')}
-                    >
+                    <a href={`#${item.id}`} className={classNames(item.id === activeHeading ? 'text-white' : 'text-gray-400', 'text-base')}>
                       {item.text}
                     </a>
                   </div>

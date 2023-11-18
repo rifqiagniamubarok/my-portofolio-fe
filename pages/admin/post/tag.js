@@ -144,7 +144,7 @@ const Tag = ({ tags: data }) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">Add Tag</ModalHeader>
-              <ModalBody>
+              <ModalBody className="text-black dark:text-white">
                 <div className="space-y-4">
                   <Input type="text" label="Name" variant="bordered" value={formAdd.name} onChange={({ target: { value } }) => setFormAdd({ ...formAdd, name: value })} />
                   <Input type="text" label="About" variant="bordered" value={formAdd.about} onChange={({ target: { value } }) => setFormAdd({ ...formAdd, about: value })} />

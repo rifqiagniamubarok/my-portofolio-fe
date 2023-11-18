@@ -6,7 +6,7 @@ const nextConfig = {
     backendUrl: process.env.BACKEND_URL,
   },
   images: {
-    domains: ['images.unsplash.com', 'res.cloudinary.com', 'localhost'],
+    domains: ['images.unsplash.com', 'res.cloudinary.com', 'localhost', 'api.rifqiagniamubarok.com'],
   },
 };
 

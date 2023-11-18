@@ -1,11 +1,14 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import { useRef, useState } from 'react';
 import Footer from '../Organisms/Footer';
+import { Button } from '@nextui-org/react';
 
 const BasicLayout = ({ footer = false, children }) => {
   const getPath = usePathname();
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
   const pathLIst = [
     {
       name: 'Home',
@@ -21,24 +24,45 @@ const BasicLayout = ({ footer = false, children }) => {
     },
   ];
 
+  const basicLayRef = useRef(null);
+
+  const handleDarkMode = () => {
+    const { classList } = basicLayRef.current;
+    if (!isDarkMode) {
+      classList.add('dark');
+    } else {
+      classList.remove('dark');
+    }
+
+    setIsDarkMode(!isDarkMode);
+  };
+
   const pathActive = 'text-base md:text-lg bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text font-medium';
-  const pathNotActive = 'text-base md:text-lg text-white';
+  const pathNotActive = 'text-base md:text-lg text-gray-600 dark:text-white';
+
   return (
-    <div className="min-h-screen bg-darkcard dark">
-      <div className="absolute top-0 z-50">
-        <div className="w-screen h-1.5  bg-gradient-to-r from-primary to-light-primary"></div>
-        <div className="flex gap-4 mx-8 md:container md:mx-auto lg:px-32  py-3 ">
-          {pathLIst.map(({ name, path }, index) => (
-            <div className={classNames(path == getPath ? pathActive : pathNotActive)} key={index}>
-              <Link href={path}>
-                <p>{name}</p>
-              </Link>
+    <div ref={basicLayRef} className="dark">
+      <div className="min-h-screen bg-[#fff] dark:bg-darkcard ">
+        <div className="absolute top-0 z-50">
+          <div className="w-screen h-1.5  bg-gradient-to-r from-primary to-light-primary"></div>
+          <div className="md:container md:mx-auto lg:px-32">
+            <div className="flex justify-between items-center  ">
+              <div className="flex gap-4 text-darkcard py-3 ">
+                {pathLIst.map(({ name, path }, index) => (
+                  <div className={classNames(path == getPath ? pathActive : pathNotActive)} key={index}>
+                    <Link href={path}>
+                      <p className="">{name}</p>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+              <Button onClick={handleDarkMode}>Dark</Button>
             </div>
-          ))}
+          </div>
         </div>
+        <div className="mx-8 md:container md:mx-auto lg:px-32">{children}</div>
+        {footer && <Footer />}
       </div>
-      <div className="mx-8 md:container md:mx-auto lg:px-32">{children}</div>
-      {footer && <Footer />}
     </div>
   );
 };

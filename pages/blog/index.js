@@ -13,7 +13,6 @@ const Post = ({ posts: data, page_info }) => {
   useEffect(() => {
     AOS.init();
   }, []);
-
   return (
     <BasicLayout>
       <section className="space-y-8 pt-20 dark pb-40">

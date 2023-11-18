@@ -1,7 +1,7 @@
 import AdminLayout from '@/components/Templates/AdminLayout';
 import { Button, Card, Input, Modal, ModalBody, ModalContent, Image as NuiImage, Skeleton, useDisclosure } from '@nextui-org/react';
 import { AiFillClockCircle, AiFillCloseCircle, AiFillDelete, AiFillEdit, AiOutlineFileImage } from 'react-icons/ai';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { parse } from 'cookie';
 import axios from 'axios';
@@ -39,6 +39,10 @@ const Photos = ({ photos: data }) => {
       console.error({ error });
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const addData = async (form) => {
     try {
@@ -162,6 +166,7 @@ export async function getServerSideProps(context) {
     } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/image`, {
       params: { page: 1, page_size: 18 },
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${cookie.token}`,
       },
     });

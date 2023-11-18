@@ -9,8 +9,9 @@ import { LuView } from 'react-icons/lu';
 
 const Profile = ({ profile: data }) => {
   const [profile, setProfile] = useState(data);
-  const [name, setName] = useState(profile.name);
-  const [about, setAbout] = useState(profile.about);
+
+  const [name, setName] = useState(data?.name || '');
+  const [about, setAbout] = useState(data?.about || '');
   const { isOpen: isOpenName, onOpen: onOpenName, onOpenChange: onOpenChangeName, onClose: onCloseName } = useDisclosure();
   const { isOpen: isOpenAbout, onOpen: onOpenAbout, onOpenChange: onOpenChangeAbout, onClose: onCloseAbout } = useDisclosure();
 
@@ -36,7 +37,7 @@ const Profile = ({ profile: data }) => {
 
   const handleOpenToWork = async () => {
     try {
-      await updateData({ open_to_work: !profile.open_to_work });
+      await updateData({ open_to_work: !profile?.open_to_work });
     } catch (error) {
       console.error({ error });
     }
@@ -84,9 +85,9 @@ const Profile = ({ profile: data }) => {
         <ModalContent>
           {(onClose) => (
             <form onSubmit={handleEditName}>
-              <ModalHeader className="flex flex-col gap-1">Edit About</ModalHeader>
-              <ModalBody>
-                <Input label="Name" value={name} onChange={({ target: { value } }) => setName(value)} />
+              <ModalHeader className="flex flex-col gap-1">Edit Name</ModalHeader>
+              <ModalBody className="text-black dark:text-white">
+                <Input className="text-black dark:text-white" label="Name" value={name} onChange={({ target: { value } }) => setName(value)} />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
@@ -105,7 +106,7 @@ const Profile = ({ profile: data }) => {
           {(onClose) => (
             <form onSubmit={handleEditAbout}>
               <ModalHeader className="flex flex-col gap-1">Edit About</ModalHeader>
-              <ModalBody>
+              <ModalBody className="text-black dark:text-white">
                 <Textarea
                   variant="bordered"
                   minRows={30}
@@ -156,7 +157,7 @@ const Profile = ({ profile: data }) => {
         <Card className="p-4">
           <div className="">
             <p className="text-gray-400">Name :</p>
-            <p>{profile.name}</p>
+            <p>{profile?.name}</p>
             <div className="space-x-2 mt-4">
               <Tooltip showArrow={true} content="Edit" placement="right" color="warning">
                 <Button color="warning" isIconOnly variant="faded" onClick={toggleNameEdit}>
@@ -182,7 +183,7 @@ const Profile = ({ profile: data }) => {
         <Card className="p-4">
           <div className="flex gap-x-4">
             <p>Open to work</p>
-            <Switch isSelected={profile.open_to_work} onChange={handleOpenToWork} />
+            <Switch isSelected={profile?.open_to_work} onChange={handleOpenToWork} />
           </div>
         </Card>
       </div>
