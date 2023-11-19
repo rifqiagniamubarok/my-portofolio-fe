@@ -11,7 +11,6 @@ const Gallery = ({ isOpen: isOpenRequire, onClose: onCloseRequire, onChange }) =
   const [photos, setPhotos] = useState([]);
   const [photoSelected, setPhotoSelected] = useState(null);
 
-
   const fetchData = async () => {
     try {
       const {
@@ -48,7 +47,7 @@ const Gallery = ({ isOpen: isOpenRequire, onClose: onCloseRequire, onChange }) =
   };
 
   const handleSave = () => {
-    onChange && onChange(photoSelected);
+    onChange && onChange({ path: photoSelected, detail: photos.find(({ path }) => path == photoSelected) });
     handleClose();
   };
 

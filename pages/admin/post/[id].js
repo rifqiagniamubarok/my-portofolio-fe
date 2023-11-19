@@ -23,10 +23,19 @@ const DetailPost = ({ post: data }) => {
 
   const publishPost = async () => {
     try {
-      const {
-        data: { data },
-      } = await axiosInstance.post(`/post/publish/${id}`);
-      setPost(data);
+      let newData;
+      if (post.is_publish) {
+        const {
+          data: { data },
+        } = await axiosInstance.post(`/post/unpublish/${id}`);
+        newData = data;
+      } else {
+        const {
+          data: { data },
+        } = await axiosInstance.post(`/post/publish/${id}`);
+        newData = data;
+      }
+      setPost(newData);
     } catch (error) {
       console.error({ error });
     }

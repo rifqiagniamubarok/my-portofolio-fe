@@ -7,6 +7,8 @@ import Placeholder from '@tiptap/extension-placeholder';
 import Toolbar from './Toolbar';
 import TagInput from '@/components/molecules/TagInput';
 import Gallery from '@/components/Organisms/Gallery';
+import TiptapImage from '@tiptap/extension-image';
+
 import {
   BreadcrumbItem,
   Breadcrumbs,
@@ -29,9 +31,24 @@ import { AiFillCloseCircle, AiFillEdit, AiFillFileImage } from 'react-icons/ai';
 import slugify from 'slugify';
 import axiosInstance from '@/utils/axiosInstance';
 
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { common, createLowlight } from 'lowlight';
+import markdown from 'highlight.js/lib/languages/markdown';
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import ts from 'highlight.js/lib/languages/typescript';
+import html from 'highlight.js/lib/languages/xml';
+
+const lowlight = createLowlight({ js });
+
 const Editor = ({ isEditPost = false, initialValue }) => {
+  // lowlight.register('html', html);
+  // lowlight.register('css', css);
+  // lowlight.register('js', js);
+  // lowlight.register('ts', ts);
   const router = useRouter();
   const [isOpenGallery, setIsOpenGallery] = useState(false);
+  const [isOpenGalleryEditor, setIsOpenGalleryEditor] = useState(false);
   const [title, setTitle] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
   const [slug, setSlug] = useState('');
@@ -40,7 +57,7 @@ const Editor = ({ isEditPost = false, initialValue }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleThumbnail = (path) => {
+  const handleThumbnail = ({ path, detail }) => {
     setThumbnail(path);
   };
 
@@ -61,6 +78,14 @@ const Editor = ({ isEditPost = false, initialValue }) => {
       Underline,
       Placeholder.configure({
         placeholder: 'Type something...',
+      }),
+      TiptapImage.configure({
+        HTMLAttributes: {
+          class: 'mx-auto',
+        },
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
       }),
     ],
     editorProps: {
@@ -172,6 +197,17 @@ const Editor = ({ isEditPost = false, initialValue }) => {
     }
   }, [editor]);
 
+  const handleInputImage = ({ path, detail }) => {
+    editor
+      ?.chain()
+      .focus()
+      .setImage({ src: path, alt: slugify(detail.name) })
+      .run();
+    // console.log({ path, name: slugify(detail.name) });
+
+    setIsOpenGalleryEditor(false);
+  };
+
   return (
     <div className="space-y-4">
       <Modal isOpen={isOpenModalDraft} onOpenChange={onOpenChangeModalDraft}>
@@ -192,6 +228,7 @@ const Editor = ({ isEditPost = false, initialValue }) => {
           )}
         </ModalContent>
       </Modal>
+      <Gallery isOpen={isOpenGalleryEditor} onClose={() => setIsOpenGalleryEditor(!isOpenGalleryEditor)} onChange={handleInputImage} />
       <Gallery isOpen={isOpenGallery} onClose={() => setIsOpenGallery(!isOpenGallery)} onChange={handleThumbnail} />
       <Card className="p-4 ">
         <div className="flex gap-4">
@@ -258,7 +295,7 @@ const Editor = ({ isEditPost = false, initialValue }) => {
       <Card className="p-4">
         <div className="p-3 bg-white transition">
           <div className="">
-            <Toolbar editor={editor} />
+            <Toolbar editor={editor} onClickImage={() => setIsOpenGalleryEditor(true)} />
           </div>
           <div className="h-[1px] w-full bg-gray-400 my-3"></div>
           <EditorContent editor={editor} className="min-h-[200px]" />

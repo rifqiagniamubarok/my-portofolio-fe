@@ -19,6 +19,10 @@ const BasicLayout = ({ footer = false, children }) => {
       path: '/blog',
     },
     {
+      name: 'Project',
+      path: '/project',
+    },
+    {
       name: 'About',
       path: '/about',
     },
@@ -56,7 +60,7 @@ const BasicLayout = ({ footer = false, children }) => {
                   </div>
                 ))}
               </div>
-              <Button onClick={handleDarkMode}>Dark</Button>
+              {/* <Button onClick={handleDarkMode}>Dark</Button> */}
             </div>
           </div>
         </div>

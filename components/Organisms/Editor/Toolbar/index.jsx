@@ -1,12 +1,12 @@
 import { AiFillCaretDown } from 'react-icons/ai';
-import { BsBraces, BsCode, BsListOl, BsListUl, BsTypeBold, BsTypeItalic, BsTypeStrikethrough, BsTypeUnderline } from 'react-icons/bs';
+import { BsBraces, BsCode, BsImage, BsListOl, BsListUl, BsTypeBold, BsTypeItalic, BsTypeStrikethrough, BsTypeUnderline } from 'react-icons/bs';
 import { RiDoubleQuotesL } from 'react-icons/ri';
 
 import { getFocusedEditor } from '../EditorUtils';
 import Button from './Button';
 import DropdownOptions from './DropdownOptions';
 
-const Toolbar = ({ editor }) => {
+const Toolbar = ({ editor, onClickImage }) => {
   if (!editor) return null;
 
   const options = [
@@ -25,6 +25,10 @@ const Toolbar = ({ editor }) => {
     if (editor.isActive('heading', { level: 3 })) return 'Heading 3';
 
     return 'Paragraph';
+  };
+
+  const handleInputImage = () => {
+    onClickImage && onClickImage();
   };
   return (
     <div className="flex items-center ">
@@ -71,6 +75,9 @@ const Toolbar = ({ editor }) => {
         </Button>
         <Button active={editor.isActive('bulletList')} onClick={() => getFocusedEditor(editor).toggleBulletList().run()}>
           <BsListUl />
+        </Button>
+        <Button onClick={handleInputImage}>
+          <BsImage />
         </Button>
       </div>
     </div>
