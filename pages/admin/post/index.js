@@ -109,7 +109,7 @@ export async function getServerSideProps(context) {
       data: {
         data: { data, page_info },
       },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/post`, {
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/post`, {
       params: { page: 1, page_size: 10 },
       headers: {
         Authorization: `Bearer ${cookie.token}`,

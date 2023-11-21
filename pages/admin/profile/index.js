@@ -206,7 +206,7 @@ export async function getServerSideProps(context) {
   try {
     const {
       data: { data },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/profile`, {
       headers: {
         Authorization: `Bearer ${cookie.token}`,
       },

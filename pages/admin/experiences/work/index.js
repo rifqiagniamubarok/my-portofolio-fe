@@ -234,7 +234,7 @@ export async function getServerSideProps(context) {
   try {
     const {
       data: { data },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/work`);
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/work`);
 
     const works = data;
     return {

@@ -8,10 +8,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const DetailBlog = ({ post: data }) => {
+const DetailBlog = ({ post: data, check }) => {
   const [post, setPost] = useState(data);
   const [activeHeading, setActiveHeading] = useState(null);
 
+  console.log({ check });
   // const parse = new DOMParser();
 
   // const doc = parse.parseFromString(post.body, 'text/html');
@@ -102,7 +103,7 @@ export async function getServerSideProps(context) {
   try {
     const {
       data: { data },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/public/post/${slug}`);
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/public/post/${slug}`);
 
     const post = data;
     return {

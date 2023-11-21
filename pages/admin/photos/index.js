@@ -163,7 +163,7 @@ export async function getServerSideProps(context) {
       data: {
         data: { data },
       },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/image`, {
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/image`, {
       params: { page: 1, page_size: 18 },
       headers: {
         'Content-Type': 'application/json',

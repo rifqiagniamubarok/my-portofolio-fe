@@ -5,14 +5,16 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import axios from 'axios';
 import classNames from 'classnames';
+import getConfig from 'next/config';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const Post = ({ posts: data, page_info }) => {
+const Post = ({ posts: data, page_info, check, error }) => {
   const [posts, setPosts] = useState(data);
   useEffect(() => {
     AOS.init();
   }, []);
+  console.log({ check, error });
   return (
     <BasicLayout>
       <section className="space-y-8 pt-20 dark pb-40">
@@ -37,12 +39,14 @@ const Post = ({ posts: data, page_info }) => {
 };
 
 export async function getServerSideProps(context) {
+  // const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
   try {
     const {
       data: {
         data: { data, page_info },
       },
-    } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/public/post`, {
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}public/post`, {
       params: { page: 1, page_size: 9 },
     });
 
