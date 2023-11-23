@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -208,8 +208,10 @@ const Editor = ({ isEditPost = false, initialValue }) => {
     setIsOpenGalleryEditor(false);
   };
 
+  const toolbarRef = useRef(null);
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       <Modal isOpen={isOpenModalDraft} onOpenChange={onOpenChangeModalDraft}>
         <ModalContent className="text-black dark:text-white">
           {(onClose) => (
@@ -292,13 +294,14 @@ const Editor = ({ isEditPost = false, initialValue }) => {
           </div>
         </div>
       </Card>
-      <Card className="p-4">
-        <div className="p-3 bg-white transition">
-          <div className="">
+      <Card className="p-4 relative ">
+        <div className="p-3 bg-white transition ">
+          <div className="sticky top-0 z-10 bg-white">
             <Toolbar editor={editor} onClickImage={() => setIsOpenGalleryEditor(true)} />
+            <div className="h-[1px] w-full bg-gray-400 my-3"></div>
           </div>
-          <div className="h-[1px] w-full bg-gray-400 my-3"></div>
-          <EditorContent editor={editor} className="min-h-[200px]" />
+
+          <EditorContent editor={editor} className="min-h-[200px] overflow-auto max-h-[630px]" />
         </div>
       </Card>
     </div>
