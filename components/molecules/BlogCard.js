@@ -2,6 +2,7 @@ import { Card, Chip } from '@nextui-org/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import ImageCustom from '../atoms/ImageCustom';
 
 const BlogCard = ({ thumbnail, title, tags, description = '', slug = '' }) => {
   const maxLengthDescription = 120;
@@ -19,7 +20,7 @@ const BlogCard = ({ thumbnail, title, tags, description = '', slug = '' }) => {
               </Chip>
             ))}
           </div>
-          <Image src={thumbnail} alt="images" fill className="object-cover" />
+          <ImageCustom src={thumbnail} alt="images" fill className="object-cover" />
         </div>
         <div className="p-4 z-20 bg-darkcard">
           <p className="text-base lg:text-lg font-semibold">{title}</p>

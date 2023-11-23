@@ -1,6 +1,7 @@
 import Article from '@/components/Organisms/Article';
 import BasicLayout from '@/components/Templates/BasicLayout';
-import { Button, Chip, Divider } from '@nextui-org/react';
+import ImageCustom from '@/components/atoms/ImageCustom';
+import { Button, Chip, Divider, Skeleton } from '@nextui-org/react';
 import axios from 'axios';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -60,11 +61,13 @@ const DetailBlog = ({ post: data, check }) => {
   //   };
   // }, [activeHeading, headings]);
 
+  const [imageLoading, setImageLoading] = useState(true);
+
   return (
     <BasicLayout footer>
       <section className="pt-20 space-y-4 dark">
         <div className="relative w-full h-32 md:h-60 overflow-hidden rounded-md" data-aos="fade-up" data-aos-duration="500">
-          <Image src={post.thumbnail} alt={post.slug + '-image'} fill className="object-cover" />
+          <ImageCustom src={post.thumbnail} alt={post.slug + '-image'} fill className="object-cover" />
           <div className="absolute bottom-2 right-2 flex gap-1">
             {post.tags.map(({ name }, index) => (
               <Chip key={index}>{name}</Chip>
