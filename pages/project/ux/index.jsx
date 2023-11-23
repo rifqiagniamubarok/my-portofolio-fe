@@ -1,7 +1,8 @@
+import ProjectLayout from '@/components/Templates/ProjectLayout';
 import React from 'react';
 
 const ProjectUx = () => {
-  return <div>ProjectUx</div>;
+  return <ProjectLayout>ProjectUx</ProjectLayout>;
 };
 
 export default ProjectUx;

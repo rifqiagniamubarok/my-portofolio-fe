@@ -1,7 +1,8 @@
+import ProjectLayout from '@/components/Templates/ProjectLayout';
 import React from 'react';
 
 const ProjectBe = () => {
-  return <div>ProjectBe</div>;
+  return <ProjectLayout>ProjectBe</ProjectLayout>;
 };
 
 export default ProjectBe;
