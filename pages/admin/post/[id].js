@@ -55,7 +55,7 @@ const DetailPost = ({ post: data }) => {
               <p className="text-lg font-semibold">{post.slug}</p>
             </div>
             <div>
-              <Link href={`/blog/${post.slug}`}>
+              <Link target="_blank" href={`/blog/${post.slug}`}>
                 <Button className="" isIconOnly color="primary" variant="faded" disabled={!post.is_publish}>
                   <FaExternalLinkAlt />
                 </Button>
