@@ -66,6 +66,14 @@ const AdminLayout = ({ children }) => {
       path: '/admin/post/tag',
     },
     {
+      name: 'Project',
+      path: '/admin/project',
+    },
+    {
+      name: 'Tech',
+      path: '/admin/project/tech',
+    },
+    {
       name: 'Photos',
       path: '/admin/photos',
     },
