@@ -3,6 +3,7 @@ import { deleteCookie } from 'cookies-next';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AiFillSmile, AiFillSnippets } from 'react-icons/ai';
+import { FaProjectDiagram } from 'react-icons/fa';
 import { RiArticleLine, RiDashboard2Line, RiFolderImageLine } from 'react-icons/ri';
 
 const Sidebar = ({ path }) => {
@@ -63,6 +64,15 @@ const Sidebar = ({ path }) => {
 
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Post
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/project" className={classNames(path && path?.includes('/admin/project') ? active : notActive)}>
+                  <FaProjectDiagram />
+
+                  <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
+                    Project
                   </span>
                 </Link>
               </li>

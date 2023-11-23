@@ -65,7 +65,7 @@ const PostLayout = ({ children }) => {
 
           <main>{children}</main>
         </section>
-      </AdminLayout>{' '}
+      </AdminLayout>
     </>
   );
 };

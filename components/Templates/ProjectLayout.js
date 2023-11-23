@@ -1,70 +1,69 @@
-import { useEffect, useRef } from 'react';
-import BasicLayout from './BasicLayout';
-import classNames from 'classnames';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import React from 'react';
+import AdminLayout from './AdminLayout';
+import { Card, Tab, Tabs } from '@nextui-org/react';
 
 const ProjectLayout = ({ children }) => {
-  const dividerStyle = 'w-1 h-10 bg-gray-400';
-  const itemsStyle = 'text-5xl leading-none text-gray-400 cursor-pointer hover:text-white hover:scale-110 ease-in-out duration-300 uppercase	';
-
-  const menuRef = useRef(null);
-  const currentPath = usePathname();
-
-  const itemList = [
+  const router = useRouter();
+  const getpath = usePathname();
+  const pathList = [
     {
-      name: 'ui',
-      path: '/project/ui',
+      name: 'project',
+      path: '/admin/project',
     },
     {
-      name: 'ux',
-      path: '/project/ux',
-    },
-    {
-      name: 'fe',
-      path: '/project/fe',
-    },
-    {
-      name: 'be',
-      path: '/project/be',
+      name: 'tech',
+      path: '/admin/project/tech',
     },
   ];
 
-  useEffect(() => {
-    if (currentPath != '/project') {
-      let { current } = menuRef;
-      if (!current) return;
-      const { classList } = current;
-      classList.remove('mt-52');
-      //   classList.remove('transition-margin');
-      //   classList.add('transition-justify');
-      //   classList.remove('justify-center');
-    }
-  }, [currentPath]);
+  const currentPath = pathList.find((path) => path.path === getpath);
+  const currentPage = currentPath?.name || 'Post';
 
+  const handleTabs = (key) => {
+    router.push(key);
+  };
   return (
-    <BasicLayout>
-      <section className="pt-20 space-y-4 dark min-h-screen">
-        <div data-aos="fade-up" data-aos-duration="500">
-          <p className="text-2xl md:text-4xl font-semibold bg-gradient-to-r from-primary to-light-primary text-transparent bg-clip-text">Projects</p>
+    <AdminLayout>
+      <section className="space-y-2 md:space-y-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 ">
+          <Card className="p-4">
+            <div>
+              <p>Total Posts</p>
+              <p className="text-2xl font-semibold">400</p>
+            </div>
+          </Card>
+          <Card className="p-4">
+            <div>
+              <p>Total Published</p>
+              <p className="text-2xl font-semibold">400</p>
+            </div>
+          </Card>
+          <Card className="p-4">
+            <div>
+              <p>Total Views</p>
+              <p className="text-2xl font-semibold">400</p>
+            </div>
+          </Card>
+          <Card className="p-4">
+            <div>
+              <p>Total Likes</p>
+              <p className="text-2xl font-semibold">400</p>
+            </div>
+          </Card>
         </div>
-        <div>
-          <div className=" w-full flex text-white justify-center gap-8 items-center mt-52 transition-margin ease-in-out duration-500" ref={menuRef}>
-            {itemList.map(({ name, path }, index) => (
-              <>
-                <div key={name}>
-                  <Link href={path}>
-                    <p className={classNames(itemsStyle)}>{name}</p>
-                  </Link>
-                </div>
-                <div className={classNames(dividerStyle, index === itemList.length - 1 && 'hidden')}></div>
-              </>
-            ))}
+        <div className="w-full flex justify-end">
+          <div className="flex flex-wrap gap-4">
+            <Tabs aria-label="Tabs radius" onSelectionChange={handleTabs} selectedKey={getpath}>
+              <Tab key="/admin/project" title="Project" />
+              <Tab key="/admin/project/tech" title="Tech" />
+            </Tabs>
           </div>
         </div>
-        <div>{children}</div>
+
+        <main>{children}</main>
       </section>
-    </BasicLayout>
+    </AdminLayout>
   );
 };
 
