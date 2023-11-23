@@ -31,7 +31,7 @@ const Login = () => {
 
       if (!data?.token) return;
 
-      await setCookie('token', data.token, { maxAge: 60 * 60 * 24 });
+      setCookie('token', data.token, { maxAge: 60 * 60 * 24 });
 
       router.push('/admin');
     } catch (error) {
