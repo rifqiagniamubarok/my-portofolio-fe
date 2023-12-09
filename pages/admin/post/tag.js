@@ -30,7 +30,7 @@ import classNames from 'classnames';
 const Tag = ({ tags: data }) => {
   const { isOpen: isOpenForm, onOpen: onOpenForm, onOpenChange: onOpenChangeForm, onClose: onCloseForm } = useDisclosure();
   const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete, onClose: onCloseDelete } = useDisclosure();
-  console.log({ data });
+
   const [tags, setTags] = useState(data);
   const [tagSelect, setTagSelect] = useState(null);
 
