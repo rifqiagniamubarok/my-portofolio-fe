@@ -1,5 +1,6 @@
 import IconUpload from '@/components/Organisms/IconUpload';
 import AdminLayout from '@/components/Templates/AdminLayout';
+import ImageCustom from '@/components/atoms/ImageCustom';
 import axiosInstance from '@/utils/axiosInstance';
 import { Button, Card, Input, Modal, ModalContent, useDisclosure } from '@nextui-org/react';
 import axios from 'axios';
@@ -74,8 +75,8 @@ const Icons = ({ icons: data }) => {
         <ModalContent>
           {(onClose) => (
             <div>
-              <div className="w-full aspect-video bg-black relative">
-                <Image src={previewIcon} alt="image-preview" fill className="object-contain" loading="lazy" />
+              <div className="w-full aspect-square bg-white relative">
+                <ImageCustom src={previewIcon} alt="image-preview" fill className="object-contain " loading="lazy" />
               </div>
             </div>
           )}
@@ -117,7 +118,7 @@ const Icons = ({ icons: data }) => {
             {icons.map(({ id, path }, index) => (
               <div
                 key={index}
-                className="w-full aspect-video rounded-md relative overflow-hidden cursor-pointer bg-black"
+                className="w-full aspect-square rounded-md relative overflow-hidden cursor-pointer border border-black "
                 onMouseOver={() => setHoverIcon(id)}
                 onMouseOut={() => setHoverIcon(null)}
                 onClick={() => {
@@ -133,7 +134,7 @@ const Icons = ({ icons: data }) => {
                     <AiFillDelete />
                   </Button>
                 </div>
-                <Image fill src={path} alt="Image" className="max-w-40 object-contain" />
+                <Image fill src={path} alt="Image" className="max-w-40 object-contain py-2 pt-2" />
               </div>
             ))}
           </div>

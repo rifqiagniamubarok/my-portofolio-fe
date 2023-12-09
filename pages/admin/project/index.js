@@ -32,7 +32,7 @@ const AdminProject = ({ projects: data }) => {
             <TableColumn></TableColumn>
           </TableHeader>
           <TableBody>
-            {projects.map(({ id, slug, is_publish, title, thumbnail }) => (
+            {projects.map(({ id, slug, is_publish, title, thumbnail, scale, status }) => (
               <TableRow key={id}>
                 <TableCell>1</TableCell>
                 <TableCell>
@@ -41,8 +41,8 @@ const AdminProject = ({ projects: data }) => {
                   </div>
                 </TableCell>
                 <TableCell>{title}</TableCell>
-                <TableCell>Active</TableCell>
-                <TableCell>Active</TableCell>
+                <TableCell>{scale}</TableCell>
+                <TableCell>{status}</TableCell>
                 <TableCell>
                   <Link href={`/admin/project/${id}`}>
                     <Button variant="faded" color="primary">

@@ -3,7 +3,7 @@ import { AiOutlineFileImage, AiOutlineSmile } from 'react-icons/ai';
 
 function IconUpload({ onIconUpload }) {
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: 'icon/*',
     onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0];
       onIconUpload(file);
