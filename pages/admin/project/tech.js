@@ -1,6 +1,7 @@
 import GalleryIcon from '@/components/Organisms/GalleryIcon';
 import ProjectLayout from '@/components/Templates/ProjectLayout';
 import ImageCustom from '@/components/atoms/ImageCustom';
+import axiosInstance from '@/utils/axiosInstance';
 import {
   Button,
   Card,
@@ -43,19 +44,20 @@ const Tech = ({ tech_stacks: data }) => {
     about: '',
   });
 
-  const toggleEdit = (tag) => {
+  const toggleEdit = (tech) => {
     if (!isOpenForm) {
-      const { name, about, id } = tag;
-      setFormAdd({ name, about });
-      // setTagSelect(id);
+      const { name, about, id, icon_url: icon } = tech;
+      setFormAdd({ name, about, icon });
+      setTechSelect(id);
       onOpenForm();
     } else {
       onCloseForm();
-      // setTagSelect(null);
-      // setTagSelect({
-      //   name: '',
-      //   about: '',
-      // });
+      setTechSelect(null);
+      setFormAdd({
+        icon: null,
+        name: null,
+        about: null,
+      });
     }
   };
 
@@ -89,12 +91,21 @@ const Tech = ({ tech_stacks: data }) => {
   const handleIconFormAdd = ({ path, detail }) => {
     setFormAdd({ ...formAdd, icon: path });
   };
-  const handleAddTech = () => {
-    console.log({ formAdd });
+  const handleAddTech = async () => {
+    // return console.log({ formAdd });
+    try {
+      await axiosInstance.post('tech-stack', formAdd);
+      await fetchTechStacks();
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setIsLoading(false);
+      onCloseForm();
+      setTechSelect(null);
+    }
   };
   const handleEditTech = () => {};
 
-  console.log({ formAdd });
   return (
     <ProjectLayout>
       <GalleryIcon isOpen={isOpenGallery} onClose={() => setIsOpenGallery(!isOpenGallery)} onChange={handleIconFormAdd} />
@@ -102,7 +113,7 @@ const Tech = ({ tech_stacks: data }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Add Tag</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Add Tech Stack</ModalHeader>
               <ModalBody className="text-black dark:text-white">
                 <div className="space-y-4">
                   {/* Image */}
@@ -187,17 +198,17 @@ const Tech = ({ tech_stacks: data }) => {
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>
-                    <div className="h-10 aspect-video relative rounded-sm overflow-hidden">
-                      <ImageCustom src={stack.icon_url || ''} alt={stack.name + '-image'} fill className="object-cover" />
+                    <div className="h-10 aspect-square relative rounded-sm overflow-hidden">
+                      <ImageCustom src={stack.icon_url || ''} alt={stack.name + '-image'} fill className="object-contain" />
                     </div>
                   </TableCell>
                   <TableCell>{stack.name}</TableCell>
                   <TableCell className="hidden md:inline-block">{stack.about || '-'}</TableCell>
                   <TableCell className="space-x-2">
-                    <Button isIconOnly variant="faded" color="warning" onClick={() => toggleEdit(tag)}>
+                    <Button isIconOnly variant="faded" color="warning" onClick={() => toggleEdit(stack)}>
                       <AiFillEdit />
                     </Button>
-                    <Button isIconOnly variant="faded" color="danger" onClick={() => toggleDelete(tag.id)}>
+                    <Button isIconOnly variant="faded" color="danger" onClick={() => toggleDelete(stack.id)}>
                       <AiFillDelete />
                     </Button>
                   </TableCell>

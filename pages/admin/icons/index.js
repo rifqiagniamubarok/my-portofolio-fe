@@ -76,7 +76,7 @@ const Icons = ({ icons: data }) => {
           {(onClose) => (
             <div>
               <div className="w-full aspect-square bg-white relative">
-                <ImageCustom src={previewIcon} alt="image-preview" fill className="object-contain " loading="lazy" />
+                <ImageCustom src={previewIcon} alt="image-preview" fill className="object-contain" loading="lazy" />
               </div>
             </div>
           )}
