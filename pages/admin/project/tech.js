@@ -51,13 +51,13 @@ const Tech = ({ tech_stacks: data }) => {
       setTechSelect(id);
       onOpenForm();
     } else {
-      onCloseForm();
-      setTechSelect(null);
       setFormAdd({
         icon: null,
         name: null,
         about: null,
       });
+      onCloseForm();
+      setTechSelect(null);
     }
   };
 
@@ -92,7 +92,6 @@ const Tech = ({ tech_stacks: data }) => {
     setFormAdd({ ...formAdd, icon: path });
   };
   const handleAddTech = async () => {
-    // return console.log({ formAdd });
     try {
       await axiosInstance.post('tech-stack', formAdd);
       await fetchTechStacks();
@@ -104,7 +103,23 @@ const Tech = ({ tech_stacks: data }) => {
       setTechSelect(null);
     }
   };
-  const handleEditTech = () => {};
+  const handleEditTech = async () => {
+    try {
+      await axiosInstance.patch(`tech-stack/${techSelect}`, formAdd);
+      await fetchTechStacks();
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setIsLoading(false);
+      onCloseForm();
+      setTechSelect(null);
+      setFormAdd({
+        icon: null,
+        name: null,
+        about: null,
+      });
+    }
+  };
 
   return (
     <ProjectLayout>
