@@ -5,7 +5,6 @@ import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Placeholder from '@tiptap/extension-placeholder';
 import Toolbar from './Toolbar';
-import TagInput from '@/components/molecules/TagInput';
 import Gallery from '@/components/Organisms/Gallery';
 import TiptapImage from '@tiptap/extension-image';
 
@@ -38,6 +37,8 @@ import css from 'highlight.js/lib/languages/css';
 import js from 'highlight.js/lib/languages/javascript';
 import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
+import TechInput from '@/components/molecules/TechInput';
+import ProjectView from '@/components/molecules/ProjectView';
 
 const lowlight = createLowlight({ js });
 
@@ -263,7 +264,7 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
               <p className="font-medium italic">{slug}</p>
             </div>
             <div className="flex gap-x-2">
-              <p className="w-20">Tags </p>
+              <p className="w-20">Tech </p>
               <p>:</p>
               <div className="flex gap-2 flex-wrap">
                 {tags.map((tag, index) => (
@@ -273,7 +274,7 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
                 ))}
               </div>
             </div>
-            <TagInput onChange={handleAddTags} />
+            <TechInput onChange={handleAddTags} />
             <Textarea
               label="Meta Description"
               variant="bordered"
@@ -292,6 +293,9 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
               </Button>
             </div>
           </div>
+        </div>
+        <div>
+          <ProjectView />
         </div>
       </Card>
       <Card className="p-4 relative ">
