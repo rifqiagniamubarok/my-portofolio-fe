@@ -141,8 +141,6 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
       status: 'draft',
     };
 
-    // console.log({ payload });
-
     try {
       let newData;
       if (isEditPost) {
