@@ -18,10 +18,10 @@ const BasicLayout = ({ footer = false, children, container = true }) => {
       name: 'Blog',
       path: '/blog',
     },
-    {
-      name: 'Project',
-      path: '/project',
-    },
+    // {
+    //   name: 'Project',
+    //   path: '/project',
+    // },
     {
       name: 'About',
       path: '/about',
