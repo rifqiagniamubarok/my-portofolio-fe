@@ -17,7 +17,7 @@ const ImageCustom = ({ ...others }) => {
   return (
     <>
       {isFail && (
-        <div className="w-full h-full bg-gray-400 flex justify-center justify-center items-center">
+        <div className="w-full h-full bg-gray-400 flex justify-center items-center">
           <MdOutlineImageNotSupported />
         </div>
       )}
