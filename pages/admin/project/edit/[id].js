@@ -1,13 +1,11 @@
-import Editor from '@/components/Organisms/Editor';
+import EditorProject from '@/components/Organisms/EditorProject';
 import AdminLayout from '@/components/Templates/AdminLayout';
 import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react';
 import axios from 'axios';
 import { parse } from 'cookie';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const EditPost = ({ post }) => {
-  const router = useRouter();
+const EditProject = ({ project: data }) => {
   return (
     <AdminLayout>
       <div className="space-y-4">
@@ -15,11 +13,12 @@ const EditPost = ({ post }) => {
           <BreadcrumbItem onClick={() => router.push('/admin/post')}>Post</BreadcrumbItem>
           <BreadcrumbItem>Edit</BreadcrumbItem>
         </Breadcrumbs>
-        <Editor isEditPost initialValue={post} />
+        <EditorProject isEditPost initialValue={data} />
       </div>
     </AdminLayout>
   );
 };
+
 export async function getServerSideProps(context) {
   const cookie = parse(context.req.headers.cookie || '');
   const isToken = cookie.token || false;
@@ -37,21 +36,21 @@ export async function getServerSideProps(context) {
   try {
     const {
       data: { data },
-    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/post/${id}`, {
+    } = await axios.get(`${process.env.SERVER_BACKEND_URL}/project/${id}`, {
       headers: {
         Authorization: `Bearer ${cookie.token}`,
       },
     });
 
-    const post = data;
+    const project = data;
     return {
-      props: { post },
+      props: { project },
     };
   } catch (error) {
     return {
-      props: { post: {} },
+      props: { project: {} },
     };
   }
 }
 
-export default EditPost;
+export default EditProject;

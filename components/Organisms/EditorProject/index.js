@@ -20,6 +20,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Select,
+  SelectItem,
   Switch,
   Textarea,
   useDisclosure,
@@ -55,6 +57,9 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
   const [slug, setSlug] = useState('');
   const [tags, setTags] = useState([]);
   const [metaDescription, setMetaDescription] = useState('');
+  const [scale, setScale] = useState('');
+  const scalelist = ['minor', 'moderate', 'major', 'massive'];
+  const [formView, setFormView] = useState([{ name: '', url: '', position: 1 }]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -99,7 +104,7 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
   const addData = async (payload) => {
     try {
       setIsLoading(true);
-      const { data } = await axiosInstance.post('/post', payload);
+      const { data } = await axiosInstance.post('/project', payload);
       return data;
     } catch (error) {
       throw error;
@@ -110,7 +115,7 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
   const editData = async (payload, id) => {
     try {
       setIsLoading(true);
-      const { data } = await axiosInstance.patch(`/post/${id}`, payload);
+      const { data } = await axiosInstance.patch(`/project/${id}`, payload);
       return data;
     } catch (error) {
       throw error;
@@ -119,15 +124,24 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
     }
   };
 
+  const handleSelectScale = ({ target: { value } }) => {
+    setScale(value);
+  };
+
   const handleSave = async () => {
     const payload = {
       thumbnail,
       title,
       slug,
+      scale,
       meta_description: metaDescription,
       body: editor.getHTML(),
-      tags: tags.map(({ id }) => id),
+      tech_stack: tags.map(({ id }) => id),
+      project_view: formView,
+      status: 'draft',
     };
+
+    // console.log({ payload });
 
     try {
       let newData;
@@ -139,7 +153,7 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
         newData = getData;
       }
       localStorage.removeItem(!isEditPost ? 'new-post' : `edit-post-${initialValue.id}`);
-      router.push(`/admin/post/${newData.id}`);
+      router.push(`/admin/project/${newData.id}`);
     } catch (error) {
       console.error({ error });
     }
@@ -156,10 +170,11 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
     };
 
     localStorage.setItem(!isEditPost ? 'new-post' : `edit-post-${initialValue.id}`, JSON.stringify(payload));
-    router.push('/admin/post');
+    router.push('/admin/project');
   };
 
   const [draftData, setDraftData] = useState(null);
+
   useEffect(() => {
     const draftLocalStorage = localStorage.getItem(!isEditPost ? 'new-post' : `edit-post-${initialValue.id}`);
     if (draftLocalStorage) {
@@ -185,13 +200,14 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
 
   useEffect(() => {
     if (initialValue && isEditPost) {
-      let { id, thumbnail, title, slug, meta_description, body, tags } = initialValue;
-      let newTags = tags?.map(({ id, name, about, createdAt, updatedAt }) => {
+      let { id, thumbnail, title, slug, meta_description, body, Tech_Stack_Icons, scale: scaleInitiate } = initialValue;
+      let newTags = Tech_Stack_Icons?.map(({ id, name, about, createdAt, updatedAt }) => {
         return { id, name, about, createdAt, updatedAt };
       });
       setThumbnail(thumbnail);
       setTitle(title);
       setSlug(slug);
+      setScale(scaleInitiate);
       setMetaDescription(meta_description);
       setTags(newTags || []);
       editor?.commands.setContent(body);
@@ -207,6 +223,10 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
     // console.log({ path, name: slugify(detail.name) });
 
     setIsOpenGalleryEditor(false);
+  };
+
+  const handleChangeView = (value) => {
+    setFormView(value);
   };
 
   const toolbarRef = useRef(null);
@@ -275,6 +295,13 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
               </div>
             </div>
             <TechInput onChange={handleAddTags} />
+            <Select label="Select scale" variant="bordered" defaultSelectedKeys={`${scalelist.indexOf(scale)}`} onChange={handleSelectScale}>
+              {scalelist.map((item, index) => (
+                <SelectItem key={index + 1} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </Select>
             <Textarea
               label="Meta Description"
               variant="bordered"
@@ -295,7 +322,7 @@ const EditorProject = ({ isEditPost = false, initialValue }) => {
           </div>
         </div>
         <div>
-          <ProjectView />
+          <ProjectView onChange={handleChangeView} />
         </div>
       </Card>
       <Card className="p-4 relative ">
